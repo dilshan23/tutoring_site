@@ -1,0 +1,19 @@
+
+
+{% block content %}
+  <h1>Questions List</h1>
+  {% if questions_list %}
+  <ul>
+    {% for q in questions_list %}
+
+      <li>
+        
+        <a href="{{ Questions.get_absolute_url }}">{{ q.question }}</a> 
+        
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no books in the library.</p>
+  {% endif %}       
+{% endblock %}

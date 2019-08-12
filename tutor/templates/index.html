@@ -1,0 +1,48 @@
+
+{% block content %}
+
+
+<head>
+	<title></title>
+</head>
+<h1>Home Page</h1>
+{% if user.is_authenticated %}
+
+
+      <p>Welcome, {{ user.get_username}}</p>
+
+       <li><a href="/logout">Logout</a></li>   
+         
+       <li><a href="/login">Login</a></li>  
+        <li><a href="/register">Register</a></li>
+
+
+        <li>Correct Answers: {{ user.student.wins }}</li>
+          <li>Wrong Answers: {{ user.student.losses }}</li>
+
+
+{% else %}
+             <li><a href="/login">Login</a></li>  
+             <li><a href="/register">Register</a></li> 
+
+
+{% endif %}
+
+
+<li><a href="/quiz">Quiz</a></li>   
+         
+       <li><a href="/admin">Teacher</a></li>
+
+
+
+<body>
+
+
+	
+
+
+</body>
+
+
+
+{% endblock  %}

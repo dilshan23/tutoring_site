@@ -1,0 +1,23 @@
+
+{% block content %}
+
+
+<p>{{data1}}</p>
+
+
+
+<form action = "/getting_answers/" method = "POST">
+	{% csrf_token %}
+	Enter Answer: <br>
+	<input type="text" name="answer">
+	<p><input type="submit" value="Submit"></p>
+</form>
+
+
+
+
+
+
+
+
+{% endblock  %}
