@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
-from . models import Questions,Student,Answer
+from . models import Question,Student,Answer
 
 
 from django.views.generic import ListView,DetailView,CreateView
@@ -22,56 +22,57 @@ def loss():
     Student.objects.update(losses=F('losses') + 1)
 
 def index(request):
-	answer1 = Answer.objects.all()
-	print(answer1)
 	
 	return render(request,'index.html')
 
 
-def quiz(request,id):
+def quiz(request,question_id):
 
-	questions = Questions.objects.get(id =id )
+    questions = Question.objects.get(id=question_id)
 
+
+    
+
+    return render(request,'quiz.html',{'data1' :questions})
+
+
+"""
+
+class allquiz(ListView):
+    model = Question
+"""
+
+def getting_answers(request,question_id):
+
+    answer1 = Answer.objects.get(id=question_id)
+    print (str(answer1))
+
+    if request.method == 'POST':
+         if request.POST['answer'] == str(answer1):
+            won()
+            print("correct")
+            request.session['response'] = "You win"
+            return redirect('/')
+         else:
+            loss()
+            print("wrong")
+            request.session['response'] = "You lost"
+            return redirect('/')
+            
+
+
+    else:
+        return redirect('/')
+
+
+
+	#answer1 = Answer.objects.get(pk = pk)
+
+    
 
 	
-
-	return render(request,'quiz.html',{'data1' :questions})
-
-
-"""def allQuiz(request):
-
-	questions = Questions.objects.all()
-
-	return render(request,'allquiz.html',{'data1':questions})"""
-
-
-class allQuiz(ListView):
-    model = Questions
-
-
-def getting_answers(request):
-
-	answer = Answer.objects.all()
-	print (answer)
 	
-	if request.method == 'POST':
-		 if request.POST['answer'] == str(answer):
-		 	won()
-		 	print("correct")
-		 	request.session['response'] = "You win"
-		 	return redirect('/')
-		 else:
-		 	loss()
-		 	print("wrong")
-		 	request.session['response'] = "You lost"
-		 	return redirect('/')
-		 	
-
-
-	else:
-		return redirect('/')
-
-
+	
    	 
 			
 
