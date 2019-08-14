@@ -11,15 +11,18 @@ from django.urls import reverse # Used to generate URLs by reversing the URL pat
 
 
 
-class Questions(models.Model):
+class Question(models.Model):
 
-	question = models.CharField(max_length = 225)
+	
+
+	question = models.CharField(max_length = 225,default = "q")
+
+	category = models.CharField(max_length = 225,default ="c")
 
 	def __str__(self):
 		return self.question
 
-	def get_absolute_url(self):
-		return reverse('question-detail', args=[str(self.id)])
+	
 
 
 	        
@@ -41,15 +44,21 @@ class Student(models.Model):
 
 class Answer(models.Model):
 
-	answer = models.IntegerField(default = 0,null = True,blank = True)
+	question = models.ForeignKey(Question,on_delete = models.CASCADE)
+
+	answer = models.IntegerField(default = 0,blank = False)
 
 
 	def __str__(self):
 		return str(self.answer)
 
+	
+        
+        
 
-	def get_absolute_url(self):
-		return reverse('answer-detail', args=[str(self.id)])
+
+	
+
 
 
 
