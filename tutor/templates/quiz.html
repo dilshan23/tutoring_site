@@ -4,9 +4,11 @@
 
 <p>{{data1}}</p>
 
+<p>Question ID:{{data1.id}}</p>
 
 
-<form action = "/getting_answers/" method = "POST">
+
+<form action = "{% url "tutor:getting_answers" data1.id %}" method = "POST">
 	{% csrf_token %}
 	Enter Answer: <br>
 	<input type="text" name="answer">
