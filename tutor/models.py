@@ -15,9 +15,13 @@ class Question(models.Model):
 
 	
 
-	question = models.CharField(max_length = 225,default = "q")
+	question = models.CharField(max_length = 225)
 
-	category = models.CharField(max_length = 225,default ="c")
+	
+
+	category = models.CharField(max_length = 225)
+
+	thumb = models.ImageField(blank = True)
 
 	def __str__(self):
 		return self.question
@@ -46,14 +50,21 @@ class Answer(models.Model):
 
 	question = models.ForeignKey(Question,on_delete = models.CASCADE)
 
-	answer = models.IntegerField(default = 0,blank = False)
+	answer = models.CharField(blank = False,max_length = 225)
 
 
 	def __str__(self):
 		return str(self.answer)
 
-	
-        
+
+
+class Teacher(models.Model):
+
+	name = models.CharField(max_length = 225)
+
+	def __str__(self):
+		return str(self.name)
+
         
 
 
