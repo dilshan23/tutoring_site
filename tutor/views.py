@@ -1,3 +1,4 @@
+
 from django.shortcuts import render,redirect
 
 # Create your views here.
@@ -8,6 +9,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from . models import Question,Student,Answer
 
+from django.urls import reverse
 
 from django.views.generic import ListView,DetailView,CreateView
 
@@ -42,22 +44,38 @@ class allquiz(ListView):
     model = Question
 """
 
+
+def quizlist(request):
+    questions = Question.objects.all()
+
+
+    return render(request,'questions_list.html',{'data1' : questions})
+
 def getting_answers(request,question_id):
+
+    answers = list(Answer.objects.all())
+    print (len(answers)+1)
+
 
     answer1 = Answer.objects.get(id=question_id)
     print (str(answer1))
 
     if request.method == 'POST':
-         if request.POST['answer'] == str(answer1):
+         if request.POST['answer'] == str(answer1).lower():
             won()
             print("correct")
             request.session['response'] = "You win"
-            return redirect('/')
+            if (question_id + 1 )!= len(answers)+1:
+                return redirect(reverse('quiz',args=(question_id+1,)))
+            elif (question_id + 1) == len(answers)+1:
+                return redirect('/')
+
+            
          else:
             loss()
             print("wrong")
             request.session['response'] = "You lost"
-            return redirect('/')
+            return redirect(reverse('quiz',args=(question_id+1,)))
             
 
 
@@ -122,7 +140,10 @@ def register(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('index')
-    else:
+            return redirect('index')  # important replace "index" wtih "tutor.idex" after adding "app_name=tutor" in urls.py
+    else:  #^ also example of namespace in templates {% url 'polls:index' %}
         form = UserCreationForm()
+    
+    
     return render(request, 'register.html', {'form': form})
+
