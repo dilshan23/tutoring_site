@@ -8,14 +8,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
 from . models import Question,Student,Answer
-
 from django.urls import reverse
-
 from django.views.generic import ListView,DetailView,CreateView
-
 from django.db.models import F
-
-
 
 def won():
     Student.objects.update(wins=F('wins') + 1)
@@ -24,39 +19,19 @@ def loss():
     Student.objects.update(losses=F('losses') + 1)
 
 def index(request):
-	
 	return render(request,'index.html')
 
-
 def quiz(request,question_id):
-
     questions = Question.objects.get(id=question_id)
-
-
-    
-
     return render(request,'quiz.html',{'data1' :questions})
-
-
-"""
-
-class allquiz(ListView):
-    model = Question
-"""
-
 
 def quizlist(request):
     questions = Question.objects.all()
-
-
     return render(request,'questions_list.html',{'data1' : questions})
 
 def getting_answers(request,question_id):
-
     answers = list(Answer.objects.all())
     print (len(answers)+1)
-
-
     answer1 = Answer.objects.get(id=question_id)
     print (str(answer1))
 
@@ -64,51 +39,20 @@ def getting_answers(request,question_id):
          if request.POST['answer'] == str(answer1).lower():
             won()
             print("correct")
-            request.session['response'] = "You win"
+            request.session['response'] = "Answer is Right"
             if (question_id + 1 )!= len(answers)+1:
                 return redirect(reverse('quiz',args=(question_id+1,)))
             elif (question_id + 1) == len(answers)+1:
-                return redirect('/')
-
-            
+                return redirect('/')         
          else:
             loss()
             print("wrong")
-            request.session['response'] = "You lost"
-            return redirect(reverse('quiz',args=(question_id+1,)))
-            
-
-
+            request.session['response'] = "Answer is Wrong"
+            return redirect(reverse('quiz',args=(question_id+1,)))           
     else:
-        return redirect('/')
-
-
-
-	#answer1 = Answer.objects.get(pk = pk)
-
-    
-
-	
-	
-	
-   	 
-			
-
-
-
-			
-
-
-
-
-
-
-
-	
-
+        return redirect('/')    
 
 def login_user(request):
-
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
