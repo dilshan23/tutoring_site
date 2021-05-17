@@ -1,7 +1,7 @@
 import tabula
 import pandas as pd
 
-df = tabula.read_pdf("1.pdf",pages ='1-125')
+df = tabula.read_pdf("table.pdf",pages ='1-125')
 
 
 df.to_csv('2.csv')
